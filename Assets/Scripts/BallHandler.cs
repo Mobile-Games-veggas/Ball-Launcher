@@ -49,14 +49,14 @@ public class BallHandler : MonoBehaviour
         currentBallRigidbody.position = worldPosition; //мяч становится туда, куда прикоснулись
     }
 
-    private void SpawnNewBall()
+    private void SpawnNewBall() //созданеи нового мяча
     {
         GameObject ballInstance = Instantiate(ballPrefab, pivot.position, Quaternion.identity);
 
-        currentBallRigidbody = ballInstance.GetComponent<Rigidbody2D>();
+        currentBallRigidbody = ballInstance.GetComponent<Rigidbody2D>(); //привязка компонентов к созданному объекту
         currentBallSprintJoint = ballInstance.GetComponent<SpringJoint2D>();
 
-        currentBallSprintJoint.connectedBody = pivot;
+        currentBallSprintJoint.connectedBody = pivot; //установка параметра "к кому прикрепляться" компонента
     }
 
     private void LaunchBall() //запуск мяча
@@ -72,6 +72,6 @@ public class BallHandler : MonoBehaviour
         currentBallSprintJoint.enabled = false;
         currentBallSprintJoint = null;
 
-        Invoke(nameof(SpawnNewBall), respawnDelay);
+        Invoke(nameof(SpawnNewBall), respawnDelay); //создание нового мяча спустя время
     }
 }
