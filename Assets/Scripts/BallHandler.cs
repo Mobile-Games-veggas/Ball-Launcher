@@ -14,7 +14,8 @@ public class BallHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!Touchscreen.current.primaryTouch.press.isPressed){
+        if(!Touchscreen.current.primaryTouch.press.isPressed)
+        {
             return;
         }
         Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
