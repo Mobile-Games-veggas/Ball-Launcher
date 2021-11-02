@@ -1377,6 +1377,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentBallRigidbody: {fileID: 608894609}
+  currentBallSprintJoint: {fileID: 608894613}
+  detachDelay: 0.1
 --- !u!4 &2082292253
 Transform:
   m_ObjectHideFlags: 0
