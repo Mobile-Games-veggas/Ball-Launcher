@@ -5,9 +5,13 @@ using UnityEngine.InputSystem;
 
 public class BallHandler : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D currentBallRigidbody;
-    [SerializeField] private SpringJoint2D currentBallSprintJoint;
+    [SerializeField] private GameObject ballPrefab;
+    [SerializeField] private Rigidbody2D pivot;
     [SerializeField] private float detachDelay;
+    [SerializeField] private float respawnDelay;
+
+    private Rigidbody2D currentBallRigidbody;
+    private SpringJoint2D currentBallSprintJoint;
 
     private Camera mainCamera; //нужно для метода, который конвертирует координаты
     private bool isDragging;
@@ -15,6 +19,8 @@ public class BallHandler : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+
+        SpawnNewBall();
     }
 
     void Update()
@@ -43,6 +49,16 @@ public class BallHandler : MonoBehaviour
         currentBallRigidbody.position = worldPosition; //мяч становится туда, куда прикоснулись
     }
 
+    private void SpawnNewBall()
+    {
+        GameObject ballInstance = Instantiate(ballPrefab, pivot.position, Quaternion.identity);
+
+        currentBallRigidbody = ballInstance.GetComponent<Rigidbody2D>();
+        currentBallSprintJoint = ballInstance.GetComponent<SpringJoint2D>();
+
+        currentBallSprintJoint.connectedBody = pivot;
+    }
+
     private void LaunchBall() //запуск мяча
     {
         currentBallRigidbody.isKinematic = false;
@@ -55,5 +71,7 @@ public class BallHandler : MonoBehaviour
     {
         currentBallSprintJoint.enabled = false;
         currentBallSprintJoint = null;
+
+        Invoke(nameof(SpawnNewBall), respawnDelay);
     }
 }
