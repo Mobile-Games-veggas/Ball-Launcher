@@ -9,21 +9,19 @@ public class BallHandler : MonoBehaviour
     [SerializeField] private SpringJoint2D currentBallSprintJoint;
     [SerializeField] private float detachDelay;
 
-    private Camera mainCamera;
+    private Camera mainCamera; //нужно для метода, который конвертирует координаты
     private bool isDragging;
 
-    // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (currentBallRigidbody == null) { return; }
 
-        if(!Touchscreen.current.primaryTouch.press.isPressed)
+        if(!Touchscreen.current.primaryTouch.press.isPressed) //если приконснулись
         {
             if (isDragging)
             {
@@ -38,22 +36,22 @@ public class BallHandler : MonoBehaviour
         isDragging = true;
         currentBallRigidbody.isKinematic = true;
 
-        Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+        Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue(); //куда прикоснулись
 
-        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(touchPosition);
+        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(touchPosition); //конвертация координат
 
-        currentBallRigidbody.position = worldPosition;
+        currentBallRigidbody.position = worldPosition; //мяч становится туда, куда прикоснулись
     }
 
-    private void LaunchBall()
+    private void LaunchBall() //запуск мяча
     {
         currentBallRigidbody.isKinematic = false;
-        currentBallRigidbody = null;
+        currentBallRigidbody = null; // подчистили ссылку
 
-        Invoke(nameof(DetachBall), detachDelay);
+        Invoke(nameof(DetachBall), detachDelay); //отключили компонент через время
     }
 
-    private void DetachBall()
+    private void DetachBall() //отсоединение мяча
     {
         currentBallSprintJoint.enabled = false;
         currentBallSprintJoint = null;
